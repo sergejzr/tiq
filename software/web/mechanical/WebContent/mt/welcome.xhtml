@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<br />
+		<p:panel style="width: 90%;">
+		<h3>
+			<span class="emphasize"> Win the #{msg['competitionTitle']} </span>
+		</h3>
+		<br />
+		<br />
+		 <p>
+		 	This is a performance based competition with 5 individual winners and 5 winning teams. 
+		 	You will be randomly assigned to one of 20 teams of annotators after 
+		 	completing one batch of 100 units successfully (i.e. getting the test example right once). 
+		</p>
+		<p>	
+			You will be shown a reference image of a face and asked to identify the same person 
+			within another set of ten images. A correctly identified face is worth 1 point. 
+		</p>
+		<p>
+				    The units will be processed in batches of 100. 
+			        For <b>quality control</b> one of the tasks in a batch will be a test case;
+				    the position of the test case within the batch will be random.
+				    The test example will be shown after the batch is finished. 
+				    If the test example was annotated correctly, you will receive the 100 points for the batch;
+			        if the test example was incorrectly annotated, you will receive no points for the finished batch 
+			        and 20 points will be subtracted from the score instead.
+		</p>
+		<h:panelGroup rendered="#{bonusBean.bonusEventsEnabled}">
+			<p>
+			Throughout the competition, there will be one hour long bonus events 
+			<h:outputText value="which are announced one hour in advance." rendered="#{!bonusBean.showSchedule}"/> 
+			<h:outputText value="which are shown in the schedule." rendered="#{bonusBean.showSchedule}"/>
+			During bonus events, points for completed batches will be increased:
+			<h:outputText value="#{bonusBean.bonusFactor * 100}"/> 
+			points if the test case is annotated correctly 
+			<h:outputText value="(#{bonusBean.bonusFactor * 20}"/> 
+			points are subtracted if the test case is annotated incorrectly).
+			<h:outputText value="For each event, the bonus is awarded for the first #{bonusBean.bonusLimitBatches} batches only." rendered="#{bonusBean.bonusLimited}"/>	
+			</p>
+		</h:panelGroup>
+		<p> 
+			You will see your team's position and points as well as position and points of the three teams ranked 
+			below and above, as well as your share of the team's reward at all times. 
+			Similarly, you will see your individual points and position as well as position and points of the 
+			three players below and above.
+			The top-10 team leaderboard and the top-10 individuals leaderboard will be revealed at the end of the competition.
+		</p>
+		
+		<p>	
+			All members of teams as well as individuals among the respective top-5 at the end of the competition 
+			will receive their reward afterwards via bonus payment.
+		</p>
+		<p>
+			The competition will start in <b>#{beforeStartBean.timeToStartString}</b> 
+			(<h:outputText value="#{learnwebBean.learnweb.start.time}">
+				<f:convertDateTime 
+					type="both"
+					dateStyle="default"
+					timeStyle="default" 
+					timeZone="#{userBean.timeZone}" />
+			</h:outputText>).<br />
+			At that point, the tasks will be available here.
+		</p>
+		<br />
+		<p>
+			You may receive an individual as well as a team-based reward, based on your individual and team rank, respectively. 
+			The team reward will be proportional to your contribution to the team score. 
+		</p>
+		<p>
+			Both rewards are distributed among individuals and teams as follows:
+		</p>
+			<h:panelGrid columns="4">
+				<h:outputText value="" style="margin:20px;"/>
+				<h:panelGrid columns="2">
+					<h:outputText value="Team Rank" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;Reward" style="font-weight:bold;"/>
+					<h:outputText value="1" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;25$" style="font-weight:bold;"/>
+					<h:outputText value="2" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;12$" style="font-weight:bold;"/>
+					<h:outputText value="3" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;7$" style="font-weight:bold;"/>
+					<h:outputText value="4" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;4$" style="font-weight:bold;"/>
+					<h:outputText value="5" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;2$" style="font-weight:bold;"/>
+				</h:panelGrid>
+				<h:outputText value="" style="margin:25px;"/>
+				<h:panelGrid columns="2">
+					<h:outputText value="Individual Rank" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;Reward" style="font-weight:bold;"/>
+					<h:outputText value="1" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;25$" style="font-weight:bold;"/>
+					<h:outputText value="2" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;12$" style="font-weight:bold;"/>
+					<h:outputText value="3" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;7$" style="font-weight:bold;"/>
+					<h:outputText value="4" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;4$" style="font-weight:bold;"/>
+					<h:outputText value="5" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;2$" style="font-weight:bold;"/>
+				</h:panelGrid>
+			</h:panelGrid>
+		<br />
+		In the case of two teams or individuals having the same score, the one who has scored first receives the better rank.
+		<p>	
+			All members of teams as well as individuals among the respective top-5 at the end of the competition 
+			will receive their reward afterwards via bonus payment.
+		</p>
+	</p:panel>
+</ui:composition>

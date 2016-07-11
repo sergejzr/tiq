@@ -1,0 +1,182 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<span class="ui-layout-unit-header"> 
+		<h:form id="ImgForm">
+			<div style="margin-left:10px">
+		<ui:remove>
+			<span class="emphasize" style="margin-left:20px">
+				<h:outputText style="font-weight: bold;" value="Annotate images in order to gain points" />
+			</span>
+			<br /><br />
+			<br />
+			</ui:remove>
+			<p>
+			<b>Select the image that most clearly shows the same person or one of the persons 
+				as the following reference image:</b>
+			</p>
+			<h:panelGroup>
+	   				<div style="position:relative;left:-10px; z-index:2;">
+	   					<img style="display:none;position:absolute"
+	   						width="375px" height="auto"
+						id="img_refImg_tophour"
+						src="#{imagesBean.imagesInstance.refImage.url}" />
+					</div>
+					<div id="img#{stat.index}div">
+						<img id="img_refImg_lens" 
+							onmouseover="showimg('refImg','');" 
+							onmouseout="hide('refImg','');"
+							style="position:absolute; z-index:1;" src="#{learnwebBean.baseUrl}../resources/image/findpost.gif"/>
+							
+		        		<p:graphicImage width="125px" height="auto"
+		        			id= "refImg"
+							value="#{imagesBean.imagesInstance.refImage.url}"/>
+					</div>
+					</h:panelGroup>
+			<p>
+			(If there is more than one image showing the person, pick the best one.)
+			</p>
+			</div>
+			<br />
+   			<p:selectOneRadio id="customRadio" value="#{imagesBean.imagesInstance.pickedImage}" layout="custom" required="true">
+        		<f:selectItem itemLabel="Img1" itemValue="#{imagesBean.imagesInstance.images[0].id}" />
+         		<f:selectItem itemLabel="Img2" itemValue="#{imagesBean.imagesInstance.images[1].id}" />
+          		<f:selectItem itemLabel="Img3" itemValue="#{imagesBean.imagesInstance.images[2].id}" />
+           		<f:selectItem itemLabel="Img4" itemValue="#{imagesBean.imagesInstance.images[3].id}" />
+            	<f:selectItem itemLabel="Img5" itemValue="#{imagesBean.imagesInstance.images[4].id}" />
+             	<f:selectItem itemLabel="Img6" itemValue="#{imagesBean.imagesInstance.images[5].id}" />
+              	<f:selectItem itemLabel="Img7" itemValue="#{imagesBean.imagesInstance.images[6].id}" />
+               	<f:selectItem itemLabel="Img8" itemValue="#{imagesBean.imagesInstance.images[7].id}" />
+                <f:selectItem itemLabel="Img9" itemValue="#{imagesBean.imagesInstance.images[8].id}" />
+                <f:selectItem itemLabel="Img10" itemValue="#{imagesBean.imagesInstance.images[9].id}" />
+ 			</p:selectOneRadio>
+ 			
+   			<p:panelGrid columns="5" >
+   				<c:forEach var="img" items="#{imagesBean.imagesInstance.images}" 
+   					varStatus="stat" end="4">
+	   				<h:panelGroup>
+	   				<div style="position:relative;left:-#{20 + (stat.index mod 5) * 30}px; z-index:2;">
+	   					<img style="display:none;position:absolute"
+	   						width="375px" height="auto"
+						id="img_#{stat.index}_tophour"
+						src="#{img.url}" />
+					</div>
+					<div id="img#{stat.index}div">
+						<img id="img_#{stat.index}_lens" 
+							onmouseover="showimg('#{stat.index}','');" 
+							onmouseout="hide('#{stat.index}','');"
+							style="position:absolute; z-index:1;" src="#{learnwebBean.baseUrl}../resources/image/findpost.gif"/>
+						
+						<p:commandLink onclick="clickRadio('#{stat.index}');" immediate="true">
+			        		<p:graphicImage width="125px" height="auto"
+			        			id= "img#{stat.index}"
+								value="#{img.url}"/>
+						</p:commandLink>
+					</div>
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 4}" />
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 3}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 2}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 1}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index}"/>
+						</div>
+					</h:panelGroup>
+   				</c:forEach>
+   				</p:panelGrid>
+   				<p:panelGrid columns="5">
+   				<c:forEach var="img" items="#{imagesBean.imagesInstance.images}" 
+   					varStatus="stat" begin="5">
+	   				<h:panelGroup>
+	   				<div style="position:relative;left:-#{20 + (stat.index mod 5) * 30}px; z-index:2;">
+	   					<img style="display:none;position:absolute"
+	   						width="375px" height="auto"
+						id="img_#{stat.index}_tophour"
+						src="#{img.url}" />
+					</div>
+					<div id="img#{stat.index}div">
+						<img id="img_#{stat.index}_lens" 
+							onmouseover="showimg('#{stat.index}','');" 
+							onmouseout="hide('#{stat.index}','');"
+							style="position:absolute; z-index:1;" src="#{learnwebBean.baseUrl}../resources/image/findpost.gif"/>
+							
+		        		<p:commandLink onclick="clickRadio('#{stat.index}');" immediate="true">
+			        		<p:graphicImage width="125px" height="auto"
+			        			id= "img#{stat.index}"
+								value="#{img.url}"/>
+						</p:commandLink>
+					</div>
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 4}" />
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 3}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 2}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index - 1}"/>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{(stat.index + 1) mod 5 == 0}">
+						<div style="margin-left:50px;">
+							<p:radioButton for="customRadio" itemIndex="#{stat.index}"/>
+						</div>
+					</h:panelGroup>
+   				</c:forEach>
+   				
+    		</p:panelGrid>
+			<br/>
+			<div style="margin-left:10px">
+			<h:commandButton styleClass="blackbutton" style="height: 32px; font-weight: bold; font-size: 16px; padding-left:12px; padding-right: 12px;" 
+				value="Submit" id="img_submit_btn" ajax="false"
+				action="#{imagesBean.onCheck}" update=":growl :right_div"
+				onclick="setTimeout('document.getElementById(\'' + this.id + '\').disabled=true;', 10);" >
+			</h:commandButton>
+			</div>
+			<p />
+		</h:form> 
+		<br/><br/>
+		<h:outputText value="This game will end in "/>
+		<h:outputText value="#{imagesBean.timeToEndString}." style="font-weight:bold"/>
+	</span>
+	
+	<script type="text/javascript">
+		function clickRadio(index){
+			document.getElementById('ImgForm:customRadio:'+index).click();
+		}
+	</script>
+	
+</ui:composition>

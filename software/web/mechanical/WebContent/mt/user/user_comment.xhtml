@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	<div>
+	<br/>
+	<p:commandButton styleClass="blackbutton" value="leave a comment" style="padding: 0px 0px;"
+		onclick="dlg.show(); return false;">
+	</p:commandButton>
+	<br/>
+	<br/>
+	<p:dialog header="Leave a comment for the L3S Admins" widgetVar="dlg"
+			resizable="true">
+
+			<h:form id="usercommentform">
+
+				<h:panelGrid columns="1">
+					<p:inputTextarea value="#{userCommentBean.comment.text}" rows="6" cols="50"  
+							autoResize="false"/>  
+					<h:commandButton actionListener="#{userCommentBean.onSubmit}"
+						value="submit" ajax="true" styleClass="blackbutton" onclick="dlg.hide()"
+						style="float:right">
+					</h:commandButton>
+				</h:panelGrid>
+			</h:form>
+
+	</p:dialog>
+	</div>
+</ui:composition>

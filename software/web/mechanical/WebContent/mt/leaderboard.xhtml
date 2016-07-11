@@ -1,0 +1,520 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom">
+
+	<p:dialog header="Bonus Events Schedule" id="s_dialog"
+		appendToBody="true" widgetVar="schedule_dialog" modal="false"
+		minWidth="400" resizable="true" rendered="#{bonusBean.bonusEventsEnabled and bonusBean.showSchedule}">
+		<h:form id="schedule_form">
+			<p>
+				<h:outputText
+					value="During the following events the score (and penalty) per batch are multiplied" />
+				<h:outputText value=" by #{bonusBean.bonusFactor}"
+					rendered="#{bonusBean.bonusFixed}" />
+				<h:outputText value=" (#{bonusBean.bonusFactor * 100} points per batch!)"/>
+				<h:outputText value="." />
+				<h:panelGroup rendered="#{bonusBean.bonusLimited}"> 
+					<br />
+					<h:outputText value="The bonus is awarded for the first #{bonusBean.bonusLimitBatches} batches only."/>	
+				</h:panelGroup>	
+			</p>
+			<h:dataTable id="events_table" value="#{bonusBean.events}"
+				var="event" border="0" styleClass="eventTableClass"
+				rendered="#{not empty bonusBean.events}">
+				<f:facet name="header">
+					<h:outputText value="Upcoming Bonus Events" />
+				</f:facet>
+				<h:column title="start" style="text-align:right">
+					<f:facet name="header">
+						<h:outputText value="Start" />
+					</f:facet>
+					<h:outputText value="#{event.start}">
+						<f:convertDateTime type="time" dateStyle="default"
+							timeStyle="short" timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" (" />
+					<h:outputText value="#{event.start}">
+						<f:convertDateTime type="date" dateStyle="medium"
+							timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=")" />
+				</h:column>
+				
+				<h:column title="End">
+					<f:facet name="header">
+						<h:outputText value="End" />
+					</f:facet>
+					<h:outputText value="#{event.end}">
+						<f:convertDateTime type="time" dateStyle="default"
+							timeStyle="short" timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" (" />
+					<h:outputText value="#{event.end}">
+						<f:convertDateTime type="date" dateStyle="medium"
+							timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=")" />
+				</h:column>
+				
+				<h:column title="Bonus Factor" rendered="#{!bonusBean.bonusFixed}">
+					<f:facet name="header">
+						<h:outputText value="Bonus Factor" />
+					</f:facet>
+					<h:outputText value="#{event.bonusFactor}" />
+				</h:column>
+			</h:dataTable>
+			
+			<h:dataTable id="past_events_table" value="#{bonusBean.pastEvents}"
+				var="event" border="0" styleClass="eventTableClass"
+				rendered="#{not empty bonusBean.pastEvents}">
+				<f:facet name="header">
+					<h:outputText value="Past Bonus Events" />
+				</f:facet>
+				<h:column title="start" style="text-align:right">
+					<f:facet name="header">
+						<h:outputText value="Start" />
+					</f:facet>
+					<h:outputText value="#{event.start}">
+						<f:convertDateTime type="time" dateStyle="default"
+							timeStyle="short" timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" (" />
+					<h:outputText value="#{event.start}">
+						<f:convertDateTime type="date" dateStyle="medium"
+							timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=")" />
+				</h:column>
+				
+				<h:column title="End">
+					<f:facet name="header">
+						<h:outputText value="End" />
+					</f:facet>
+					<h:outputText value="#{event.end}">
+						<f:convertDateTime type="time" dateStyle="default"
+							timeStyle="short" timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" (" />
+					<h:outputText value="#{event.end}">
+						<f:convertDateTime type="date" dateStyle="medium"
+							timeZone="#{userBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=")" />
+				</h:column>
+				
+				<h:column title="Bonus Factor" rendered="#{!bonusBean.bonusFixed}">
+					<f:facet name="header">
+						<h:outputText value="Bonus Factor" />
+					</f:facet>
+					<h:outputText value="#{event.bonusFactor}" />
+				</h:column>
+			</h:dataTable>
+			<p>
+				<h:outputText value="Time zone: #{userBean.timeZone}" />
+			</p>
+			<p>
+				<p:commandButton value="close" styleClass="blackbutton"
+					oncomplete="schedule_dialog.hide()" />
+			</p>
+		</h:form>
+	</p:dialog>
+
+	<div id="right_div"
+		style="width: 90%; position: relative; margin-left: auto; margin-right: auto;">
+
+		<h:panelGroup id="no_group_controls"
+			rendered="#{!(leaderboardBean.showGroupControls())}">
+			<p:commandButton styleClass="greenbutton" id="schedule_btn"
+				value="bonus schedule" oncomplete="schedule_dialog.show()"
+				immediate="true" ajax="true" style="float:left; margin-left: 1px;"
+				rendered="#{bonusBean.bonusEventsEnabled and bonusBean.showSchedule}">
+			</p:commandButton>
+		</h:panelGroup>
+		<h:panelGroup id="group_controls"
+			rendered="#{leaderboardBean.showGroupControls()}">
+			<br />
+			<h:form id="to_group_form">
+				<p:commandButton styleClass="greenbutton" id="go_to_group_btn"
+					action="#{groupBean.goToGroup()}" value="team details and messages"
+					immediate="true" ajax="false" style="float:left;">
+				</p:commandButton>
+				<p:commandButton styleClass="greenbutton" id="schedule_btn"
+					value="bonus schedule" oncomplete="schedule_dialog.show()"
+					immediate="true" ajax="true" style="float:left; margin-left: 1px;"
+					rendered="#{bonusBean.bonusEventsEnabled and bonusBean.showSchedule}">
+				</p:commandButton>
+
+				<div style="float: left;">
+					<h:commandLink action="#{groupBean.goToGroup()}"
+						update=":right_pane"
+						rendered="#{groupBean.newMessages or groupBean.groupMerged}">
+						<table border="">
+							<tr>
+								<td><h:panelGroup rendered="#{groupBean.newMessages}">
+										<h:graphicImage
+											url="#{learnwebBean.baseUrl}../resources/icon/exclamation.png"
+											style="float:left; vertical-align:top; height:14px; width: 14px; margin:1px;margin-top:0px;"
+											alt="!" />
+										<h:outputText value="new team message(s)"
+											style="float:left; vertical-align:top; margin-left:4px; font-weight:bold;">
+										</h:outputText>
+									</h:panelGroup></td>
+							</tr>
+							<tr>
+								<td><h:panelGroup rendered="#{groupBean.groupMerged}">
+										<h:graphicImage
+											url="#{learnwebBean.baseUrl}../resources/icon/exclamation.png"
+											style="float:left; vertical-align:top; height:14px; width: 14px; margin:1px; margin-top:2px;"
+											alt="!" />
+										<h:outputText value="team has merged!"
+											rendered="#{groupBean.userGroup.role eq 'MEMBER'}"
+											style="float:left; vertical-align:top; margin-left:4px; font-weight:bold; margin-top:0px;">
+										</h:outputText>
+										<h:outputText value="update to team history"
+											rendered="#{groupBean.userGroup.role eq 'LEADER'}"
+											style="float:left; vertical-align:top; margin-left:4px; font-weight:bold; margin-top:0px;">
+										</h:outputText>
+									</h:panelGroup></td>
+							</tr>
+							<tr>
+								<td><h:panelGroup rendered="#{groupBean.newEvent}">
+										<h:graphicImage
+											url="#{learnwebBean.baseUrl}../resources/icon/exclamation.png"
+											style="float:left; vertical-align:top; height:14px; width: 14px; margin:1px; margin-top:2px;"
+											alt="!" />
+										<h:outputText value="new invitation"
+											style="float:left; vertical-align:top; margin-left:4px; font-weight:bold; margin-top:0px;">
+										</h:outputText>
+									</h:panelGroup></td>
+							</tr>
+						</table>
+					</h:commandLink>
+				</div>
+			</h:form>
+			<br />
+			<br />
+			<br />
+		</h:panelGroup>
+		<div style="clear: both;">
+			<p>
+				<h:outputText style="font-weight:bold; font-size:18px;"
+					rendered="#{learnwebBean.learnweb.running}"
+					value="Progress in your current batch: (#{imagesBean.bucket.progress - 1}/#{imagesBean.bucket.bucketSize})" />
+			</p>
+
+			<h:panelGroup
+				rendered="#{leaderboardBean.showSingleUserScore() and leaderboardBean.userEntry != null}">
+				<h:panelGrid columns="2">
+					<h:outputText value="Your score: " style="font-weight:bold;" />
+					<h:outputText value="#{leaderboardBean.userEntry.score}"
+						style="font-weight:bold;" />
+				</h:panelGrid>
+			</h:panelGroup>
+		</div>
+		<p:dataTable id="leaderboard_table" value="#{leaderboardBean.scores}"
+			var="score" rowIndexVar="rowIndex"
+			rowStyleClass="#{score.userId eq userBean.user.id ? 'ownrow' : null}"
+			rendered="#{leaderboardBean.showTable()}">
+			<f:facet name="header">
+				<h:outputText value="Highscore"
+					rendered="#{not (leaderboardBean.showGroupLeaderboard())}" />
+				<h:outputText value="Individuals Highscore"
+					rendered="#{leaderboardBean.showGroupLeaderboard()}" />
+			</f:facet>
+			<p:column headerText="Rank" style="width:40px;"
+				rendered="#{!(score.userId eq -1)}">
+				<h:outputText value="#{score.rank}" />
+			</p:column>
+			<p:column headerText="User" rendered="#{!(score.userId eq -1)}">
+				<h:outputText value="#{score.username}" />
+			</p:column>
+			<p:column headerText="Points" style="width:80px;"
+				rendered="#{!(score.userId eq -1)}">
+				<h:outputText value="#{score.score}" />
+			</p:column>
+			<p:column colspan="3" rendered="#{score.userId eq -1}">
+				 	...
+				</p:column>
+			<p:column colspan="3" rendered="#{score.userId eq -1}">
+				 	...
+				</p:column>
+			<p:column colspan="3" rendered="#{score.userId eq -1}">
+					...
+				</p:column>
+		</p:dataTable>
+		<br />
+		<h:panelGroup
+			rendered="#{leaderboardBean.showNoGroupYetMessageRandom()}">
+			<p>
+				<h:outputText
+					value="You are not a member of a team yet. You will be assigned to a team after completing #{leaderboardBean.groupJoinProgress -1} units."
+					style="font-weight:bold; margin-bottom:20px;"
+					rendered="#{!(leaderboardBean.groupJoinProgress eq 101)}" />
+
+				<h:outputText
+					value="You are not a member of a team yet. You will be assigned to a team after successfully completing one batch."
+					style="font-weight:bold; margin-bottom:20px;"
+					rendered="#{leaderboardBean.groupJoinProgress eq 101}" />
+			</p>
+		</h:panelGroup>
+		<h:panelGroup
+			rendered="#{leaderboardBean.showNoGroupYetMessageLeader()}">
+			<p>
+				<h:outputText
+					value="You are not a member of a team yet. Your team will be created after completing #{leaderboardBean.groupJoinProgress -1} units."
+					style="font-weight:bold; margin-bottom:20px;"
+					rendered="#{!(leaderboardBean.groupJoinProgress eq 101)}" />
+
+				<h:outputText
+					value="You are not a member of a team yet. Your team will be created after successfully completing one batch."
+					style="font-weight:bold; margin-bottom:20px;"
+					rendered="#{leaderboardBean.groupJoinProgress eq 101}" />
+			</p>
+		</h:panelGroup>
+		<p:dataTable id="group_leaderboard_table"
+			value="#{leaderboardBean.groupScores}" var="score"
+			rowIndexVar="rowIndex"
+			rowStyleClass="#{score.groupId eq groupBean.userGroup.groupId ? 'ownrow' : null}"
+			rendered="#{leaderboardBean.showGroupLeaderboard()}">
+			<f:facet name="header">
+				<h:outputText value="Team Highscore" />
+			</f:facet>
+			<p:column headerText="Rank" style="width:40px;"
+				rendered="#{!(score.groupId eq -1)}">
+				<h:outputText value="#{score.rank}" rendered="#{score.rank != -1}" />
+			</p:column>
+			<p:column headerText="Team" rendered="#{!(score.groupId eq -1)}">
+				<h:outputText value="#{score.groupname}"
+					rendered="#{score.rank != -1}" />
+				<h:outputText value="your share:" rendered="#{score.rank == -1}" />
+			</p:column>
+
+			<p:column headerText="Points" style="width:80px;"
+				rendered="#{!(score.groupId eq -1)}">
+				<h:outputText value="#{score.score}" rendered="#{score.rank != -1}" />
+				<h:outputText value="#{leaderboardBean.userShareString}%"
+					rendered="#{score.rank == -1}" />
+			</p:column>
+
+			<p:column rendered="#{score.groupId eq -1}">
+				 	...
+				</p:column>
+			<p:column rendered="#{score.groupId eq -1}">
+				 	...
+				</p:column>
+			<p:column rendered="#{score.groupId eq -1}">
+					...
+				</p:column>
+		</p:dataTable>
+
+		<h:panelGroup
+			rendered="#{leaderboardBean.showGroupLeaderLeaderboard()}">
+			<p>
+				<h:outputText id="end_gf_text"
+					value="Time to end of team formation phase: #{groupBean.timeToEndGroupFormationString}"
+					style="font-weight:bold;" />
+				<custom:fieldhelp
+					helptext="You can only expand you team in the team formation phase by inviting others to join you, or by joining other teams."
+					helptext2="Afterwards, the teams will be fixed for the rest of the competition."
+					show="true" maxwidth="300" />
+			</p>
+			<h:form id="group_leader_form">
+				<p:dataTable id="groupleader_leaderboard_table"
+					value="#{leaderboardBean.groupScores}" var="score"
+					rowIndexVar="rowIndex"
+					rowStyleClass="#{score.groupId eq groupBean.userGroup.groupId ? 'ownrow' : null}"
+					styleClass="table_with_help">
+					<f:facet name="header">
+						<h:outputText value="Teams" />
+					</f:facet>
+					<p:column headerText="Rank" style="width:40px;"
+						rendered="#{!(score.groupId eq -1)}">
+						<h:outputText value="#{score.rank}" rendered="#{score.rank != -1}" />
+					</p:column>
+					<p:column headerText="Team" rendered="#{!(score.groupId eq -1)}">
+						<h:outputText
+							value="#{score.groupname} (Members: #{score.group.numMembers})"
+							rendered="#{score.rank != -1}" />
+						<h:outputText value="your share:" rendered="#{score.rank == -1}" />
+					</p:column>
+
+					<p:column headerText="Points" style="width:80px;"
+						rendered="#{!(score.groupId eq -1)}">
+						<h:outputText value="#{score.score}"
+							rendered="#{score.rank != -1}" />
+						<h:outputText value="#{leaderboardBean.userShareString}%"
+							rendered="#{score.rank == -1}" />
+					</p:column>
+
+					<p:column style="width:80px;" rendered="#{!(score.groupId eq -1)}">
+						<f:facet name="header">
+							<table>
+								<tr>
+									<td><h:outputText value="Action" /></td>
+									<td><p:button id="help"
+											style="width: 15px; height: 15px; margin-left:-2px;"
+											icon="ui-icon-help" /></td>
+								</tr>
+							</table>
+							<p:overlayPanel for="help" showEvent="mouseover"
+								hideEvent="mouseout" hideEffect="fade"
+								style="width:300px !important; white-space:normal !important; font-weight:normal;">
+								<p:panel>
+									<p>
+										<h:outputText value="Invitation: " style="font-weight:bold;" />
+										<h:outputText
+											value="invite another team to join your team. If they accept, all members of the other team will become members of your team." />
+									</p>
+									<p>
+										<h:outputText value="Ask other team for an invitation: "
+											style="font-weight:bold;" />
+										<h:outputText
+											value="Ask the other team to invite you. If they accept, an invitation is sent to you and you have the opportunity to join the other team." />
+									</p>
+								</p:panel>
+							</p:overlayPanel>
+						</f:facet>
+
+
+						<ui:remove>
+							<p:panelGrid columns="2">
+								<p:commandButton styleClass="greenbutton_small"
+									id="invite_button" action="#{invitationBean.doInvite()}"
+									value="I" update=":growl :center_pane" style="float:left;">
+									<f:setPropertyActionListener
+										target="#{invitationBean.targetGroup}"
+										value="#{score.groupId}" />
+								</p:commandButton>
+								<p:commandButton styleClass="greenbutton_small"
+									rendered="#{score.rank != -1 and score.groupId != groupBean.userGroup.groupId}"
+									action="#{invitationBean.doOffer()}" value="R"
+									update=":growl :center_pane" style="float:left;">
+									<f:setPropertyActionListener
+										target="#{invitationBean.targetGroup}"
+										value="#{score.groupId}" />
+								</p:commandButton>
+							</p:panelGrid>
+						</ui:remove>
+						<table>
+							<tr>
+								<td style="border-style: none !important;"><h:panelGroup
+										rendered="#{score.rank != -1 and score.groupId != groupBean.userGroup.groupId and ((score.group.numMembers + leaderboardBean.groupEntry.group.numMembers) le invitationBean.groupLimit)}">
+										<p:commandLink id="invite_button"
+											title="Invite that team to join your team"
+											styleClass="buttons_link"
+											action="#{invitationBean.doInvite()}"
+											update=":growl :center_pane">
+											<h:graphicImage alt="invite"
+												value="http://fs3.l3s.uni-hannover.de/~rokicki/imgs/invite1.jpg"
+												width="48" height="48" />
+											<f:setPropertyActionListener
+												target="#{invitationBean.targetGroup}"
+												value="#{score.groupId}" />
+										</p:commandLink>
+									</h:panelGroup></td>
+								<td style="border-style: none !important;"><p:commandLink
+										id="offer_button" title="Ask team for invitation to join them"
+										styleClass="buttons_link"
+										rendered="#{score.rank != -1 and score.groupId != groupBean.userGroup.groupId and ((score.group.numMembers + leaderboardBean.groupEntry.group.numMembers) le invitationBean.groupLimit)}"
+										action="#{invitationBean.doOffer()}"
+										update=":growl :center_pane">
+										<h:graphicImage alt="ask"
+											value="http://fs3.l3s.uni-hannover.de/~rokicki/imgs/offer2.jpg"
+											width="48" height="48" />
+										<f:setPropertyActionListener
+											target="#{invitationBean.targetGroup}"
+											value="#{score.groupId}" />
+									</p:commandLink></td>
+							</tr>
+						</table>
+					</p:column>
+
+					<p:column rendered="#{score.groupId eq -1}">
+				 		...
+					</p:column>
+					<p:column rendered="#{score.groupId eq -1}">
+				 		...
+					</p:column>
+					<p:column rendered="#{score.groupId eq -1}">
+						...
+					</p:column>
+					<p:column rendered="#{score.groupId eq -1}">
+						...
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</h:panelGroup>
+		<br />
+
+		<h:panelGroup
+			rendered="#{leaderboardBean.showRankInformation() and leaderboardBean.userEntry != null}">
+			<div class="score-div">
+				<br />
+				<h:panelGrid columns="2">
+					<h:outputText value="Your score: " />
+					<h:outputText value="#{leaderboardBean.userEntry.score}" />
+					<h:outputText value="Your rank: "
+						rendered="#{leaderboardBean.showRank()}" />
+					<h:outputText value="#{leaderboardBean.userEntry.rank}"
+						rendered="#{leaderboardBean.showRank()}" />
+				</h:panelGrid>
+			</div>
+		</h:panelGroup>
+
+		<h:panelGroup
+			rendered="#{leaderboardBean.showLotteryInfo() and leaderboardBean.userEntry != null}">
+			<span class="lottery-span-big"> <br /> <h:outputText
+					value="Current number of Tickets earned by all players: #{leaderboardBean.numTicketsAll}"
+					rendered="#{leaderboardBean.showNumTicketsAll1()}" /> <h:outputText
+					value="Number of Tickets earned by all players: #{leaderboardBean.numTicketsAll}"
+					rendered="#{leaderboardBean.showNumTicketsAll2()}" /> <br /> <br />
+				<h:outputText
+					value="You have earned #{leaderboardBean.userEntry.numTickets} tickets." />
+				<br />
+
+			</span>
+			<span class="lottery-span-small"> <br /> <h:outputText
+					value="Your score: #{leaderboardBean.userEntry.score}" /><br /> <h:outputText
+					value="Points required for the next ticket: ${leaderboardBean.pointsToNextTicket}"
+					rendered="#{leaderboardBean.showPointsRequired()}" /> <br />
+			</span>
+			<br />
+			<br />
+			<p:dataTable id="user_tickets_table1"
+				value="#{leaderboardBean.userTickets}" var="ticket"
+				rowIndexVar="rowIndex"
+				rendered="#{leaderboardBean.showUserTickets1()}"
+				emptyMessage="You have no lottery tickets so far.">
+				<f:facet name="header">
+					<h:outputText value="Your tickets" />
+				</f:facet>
+				<p:column headerText="code">
+					<h:outputText value="#{ticket.ticketCode}" />
+				</p:column>
+			</p:dataTable>
+
+			<p:dataTable id="user_tickets_table2"
+				value="#{leaderboardBean.userTickets}" var="ticket"
+				rowIndexVar="rowIndex"
+				rendered="#{leaderboardBean.showUserTickets2()}"
+				emptyMessage="You have no lottery tickets."
+				rowStyleClass="#{ticket.prizeCents > 0 ? 'ownticketrow' : null}">
+				<f:facet name="header">
+					<h:outputText value="Your tickets" />
+				</f:facet>
+				<p:column headerText="code">
+					<h:outputText value="#{ticket.ticketCode}" />
+				</p:column>
+				<p:column headerText="prize">
+					<h:outputText value="#{ticket.prizeDollars}$"
+						rendered="#{ticket.prizeCents > 0}" />
+					<h:outputText value="-" rendered="#{ticket.prizeCents eq 0}" />
+				</p:column>
+			</p:dataTable>
+		</h:panelGroup>
+
+	</div>
+</ui:composition>

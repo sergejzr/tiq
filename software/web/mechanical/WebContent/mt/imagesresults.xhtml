@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<span class="ui-layout-unit-header"> 
+		<h:form id="imgForm">
+			<span class="emphasize" >
+				<h:outputText style="font-weight: bold;" value="Results of the last Batch" />
+			</span>
+			<br />
+			<br />
+			<p>
+			<h:panelGroup rendered="#{imgResultsBean.honeypotInstance.correct}">
+				<p>Congratulations!</p>
+				You have picked the correct answer in the test example shown below.
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!imgResultsBean.honeypotInstance.correct}">
+				<p>Sorry!</p>
+				You have picket the wrong answer (colored red) in the test example shown below.
+				The correct answer is colored green.
+			</h:panelGroup>
+			</p>
+			<p>
+			<br/>
+			<b>Reference image:</b>
+			</p>
+			<h:panelGroup>
+	   				<div style="position:relative;left:-10px; z-index:2;">
+	   					<img style="display:none;position:absolute"
+	   						width="375px" height="auto"
+						id="img_refImg_tophour"
+						src="#{imgResultsBean.honeypotInstance.refImage.url}" />
+					</div>
+					<div id="img#{stat.index}div">
+						<img id="img_refImg_lens" 
+							onmouseover="showimg('refImg','');" 
+							onmouseout="hide('refImg','');"
+							style="position:absolute; z-index:1;" src="#{learnwebBean.baseUrl}../resources/image/findpost.gif"/>
+							
+		        		<p:graphicImage width="125px" height="auto"
+		        			id= "refImg"
+							value="#{imgResultsBean.honeypotInstance.refImage.url}"/>
+					</div>
+			</h:panelGroup>
+			<p>
+			<b>Choices:</b>
+			</p>
+ 
+   			<p:panelGrid columns="5">
+   				<c:forEach var="img" items="#{imgResultsBean.honeypotInstance.images}" varStatus="stat">
+   				<h:panelGroup>
+	   				<div style="position:relative;left:-#{20 + (stat.index mod 5) * 30}px; z-index:2;">
+	   					<img style="display:none;position:absolute"
+	   						width="375px" height="auto"
+						id="img_#{stat.index}_tophour"
+						src="#{img.url}" />
+					</div>
+					<div id="img#{stat.index}div">
+						<img id="img_#{stat.index}_lens" 
+							onmouseover="showimg('#{stat.index}','');" 
+							onmouseout="hide('#{stat.index}','');"
+							style="position:absolute; z-index:1;" src="#{learnwebBean.baseUrl}../resources/image/findpost.gif"/>
+							
+		        		<p:graphicImage width="125px" height="auto"
+		        			id= "img#{stat.index}"
+							value="#{img.url}"
+							style="#{imgResultsBean.imgStyles[stat.index]}"/>
+					</div>
+					</h:panelGroup>
+				</c:forEach>
+    		</p:panelGrid>
+			<br/>
+			<h:commandButton styleClass="blackbutton" style="height: 32px; font-weight: bold; font-size: 16px; padding-left:12px; padding-right: 12px;" 
+				value="Continue" id="img_submit_btn"
+				action="#{imgResultsBean.onContinue}" update=":growl :right_div"
+				onclick="setTimeout('document.getElementById(\'' + this.id + '\').disabled=true;', 10);" >
+			</h:commandButton>
+			<p />
+		</h:form> 
+		<br/><br/>
+		<h:outputText value="This game will end in "/>
+		<h:outputText value="#{imagesBean.timeToEndString}." style="font-weight:bold"/>
+	</span>
+</ui:composition>

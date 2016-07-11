@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+		<br/>
+		<p:panel style="width: 90%;">
+			<h3>
+			<span class="emphasize"> The #{msg['competitionTitle']} has ended. </span> 
+			</h3>
+			<br />
+			<p>
+				<b>Thank you very much for participating!</b>
+			</p>
+			<p>	
+				If you are a member of one of the winning teams and/or one of the winners, 
+				you will receive the reward via bonus payment shortly. <br/>
+			</p>
+			<p>
+				<h:outputText 
+					value="The winning lottery tickets will be announced shortly." 
+					rendered="#{endBean.lottery and !endBean.winnersDrawn}"/>
+				<h:outputText
+					value="This is a list of all tickets in the game, with winners marked:"
+					rendered="#{endBean.lottery and endBean.winnersDrawn}"/>
+			</p>
+			<br/>
+			<p:dataTable id="all_tickets_table" 
+				rendered="#{endBean.lottery and endBean.winnersDrawn}"
+				value="#{endBean.tickets}" var="ticket"
+				rowStyleClass="#{ticket.prizeCents > 0 ? 'winnerticketrow' : null}">
+				<p:column headerText="code">
+					<h:outputText value="#{ticket.ticketCode}"/>
+    			</p:column>
+				<p:column headerText="prize">
+					<h:outputText value="#{ticket.prizeDollars}$"
+						rendered="#{ticket.prizeCents > 0}"/>
+					<h:outputText value="-"
+						rendered="#{ticket.prizeCents eq 0}"/>
+				</p:column>
+				<p:column headerText="owner">
+					<h:outputText value="#{ticket.anonName}"
+						rendered="#{ticket.prizeCents > 0}"/>
+					<h:outputText value=""
+						rendered="#{ticket.prizeCents eq 0}"/>
+				</p:column>
+			</p:dataTable>
+		<br/>
+		</p:panel>		
+</ui:composition>

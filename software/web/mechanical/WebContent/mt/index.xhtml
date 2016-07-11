@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view locale="#{userBean.localeCode}" contentType="text/html">
+	<f:metadata>
+		<f:event listener="#{userBean.preRenderView}" type="preRenderView"></f:event>
+	</f:metadata>
+	<h:head>
+		<title><h:outputText value="#{msg.homepageTitle}"
+				escape="false" /></title>
+		<base href="#{learnwebBean.baseUrl}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{learnwebBean.baseUrl}../resources/css/login.css" />
+		<h:outputScript library="js" name="jstz.min.js"/>
+		<h:outputScript library="js" name="timezone_setter.js"/>
+	</h:head>
+
+	<h:body>
+		<h:form prependId="false" id="timezone_form">
+    		<h:inputText id="timezone_holder" value="#{userBean.timeZone}" styleClass="hide">
+        		<f:ajax listener="#{userBean.timeZoneChangedListener}"></f:ajax>
+    		</h:inputText>
+		</h:form>	
+		<p:growl id="growl" />
+		<div style="float:right; margin-left: auto; margin-right:50px; margin-top:10px;">
+		<h:commandButton styleClass="blackbutton"
+						value="FAQ" onclick="faq.show();"/>
+		</div>
+		<div class="info">
+		<div style="display:block; position: relative;top: 20px; margin-left: auto; margin-right: auto;">
+			<div style=" max-width: 600px; height: 20%; margin-left: 10%;  text-align: justify; float:left;">
+				<h:outputText value="Welcome to the #{msg['competitionTitle']}"
+					style="font-weight: bold; font-family: sans-serif;font-size:larger;"/>
+				<br/><br/>
+				<span style="font-family: sans-serif;font-size:medium; display:block; height=100%;">
+					<p>
+					In order to participate, please log in or register an account.
+					</p>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<p>
+					If there are any problems, please feel free to contact us at <br/>
+					<a href="mailto:crowdgames@l3s.de">crowdgames@l3s.de</a>.
+					</p> 
+					<br/>
+					<h:outputLink styleClass="greenbutton" 
+						value="#{learnwebBean.mechanicalUrl}">
+						Back to the start page
+					</h:outputLink>
+				</span>
+
+			</div>
+	
+				<div style="width: 260px;height: inherit;top: 5%;margin-left: auto; margin-right:1%; padding-left: 10px;padding-right: 20px;display: block;border-left: 1px solid #489a83; border-bottom: 1px solid #489a83; float:right;">
+					<h:form rendered="#{!userBean.loggedIn}" id="loginform">
+						<p:focus for="username" />
+						<h:panelGrid columns="3">
+
+							<h:graphicImage for="username" url="../resources/icon/user.png"
+								title="#{msg.username}" height="30" width="30" alt=""></h:graphicImage>
+							<h:inputText id="username" styleClass="inputbox"
+								value="#{loginBean.username}"></h:inputText>
+							<h:outputText value="" />
+
+							<h:outputText value="" />
+							<p:message showSummary="true" showDetail="false"
+								styleClass="error" for="username" />
+							<h:outputText value="" />
+
+							<h:graphicImage for="password" url="../resources/icon/pwd.png"
+								height="20" width="20" title="#{msg.password}"
+								style="padding-left:4px;" alt=""></h:graphicImage>
+							<h:inputSecret styleClass="inputbox" id="password"
+								value="#{loginBean.password}" feedback="false"></h:inputSecret>
+							<h:outputText value="" />
+							
+							<h:outputText value="" />
+							<p:message showSummary="true" showDetail="false"
+								styleClass="error" for="password" />
+							<h:outputText value="" />
+	
+							<h:outputText value="" />
+							<h:panelGrid columns="2">
+								<h:commandButton styleClass="greenbutton"
+									action="#{loginBean.login()}" value="#{msg.loginLabel}"
+									ajax="false" 
+									update=":growl "/>
+								<h:commandButton id="register" rendered="#{not learnwebBean.learnweb.afterEnd}"
+									onclick="dlg.show(); return false;" styleClass="greenbutton"
+									value="I'm a new user!" style=" margin-left:0px;"></h:commandButton>
+							</h:panelGrid>
+							<h:outputText value="" />
+						</h:panelGrid>
+						<br></br>
+						<h:outputLink id="forgot"
+							style="color:rgb(75, 170, 201); font-weight:bold;"
+							value="user/password.jsf">
+							<h:outputText value="#{msg.forgotten_password}" />
+						</h:outputLink>
+					</h:form>
+					</div>
+				</div>
+			</div>
+
+		<div class="footer">
+			This task is part of research on performance based reward systems. It is conducted within the EU IP Project 
+			QualiMaster (<h:outputLink style="z-index:-500 !important;" value="http://qualimaster.eu" >qualimaster.eu</h:outputLink>)
+		</div>
+		<p:dialog widgetVar="faq" header="Frequently Asked Questions" resisable="true" width="700" height="600">
+			<p><b>What are the teams?</b></p>
+			<p>
+				<b>A: </b>
+				There are 20 teams. Each participant is randomly assigned to a team  (after completing one batch) and contributes to the team score. 
+			</p>
+			
+			<p><b>How are rewards distributed?</b></p>
+			<p>
+				<b>A: </b>
+				Each participant has two opportunities to receive a reward:
+			</p>
+				<ul>
+				<li>
+			<p>
+				Each participant contributes to the team score. Based on his/her contribution to the team score, a participant receives a 
+				share proportional to his/her contribution. If you have contributed 20% to the team score, you will receive 20% of the team reward.
+			</p>
+			<p>
+				The team reward is distributed to the teams based on their final rank, according to the following distribution:
+			</p>
+			<h:panelGrid columns="2" style="margin: 0 auto;text-align:center;">
+				<h:outputText value="Team Rank" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;Reward" style="font-weight:bold;"/>
+				<h:outputText value="1" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;25$" style="font-weight:bold;"/>
+				<h:outputText value="2" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;12$" style="font-weight:bold;"/>
+				<h:outputText value="3" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;7$" style="font-weight:bold;"/>
+				<h:outputText value="4" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;4$" style="font-weight:bold;"/>
+				<h:outputText value="5" style="font-weight:bold;"/>
+				<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;2$" style="font-weight:bold;"/>
+			</h:panelGrid>
+			<p>
+				Teams that are not ranked among the top-5 at the end of the competition, do not receive a reward.
+			</p>
+				</li>
+				<li>
+				<p>
+				Additionally, there is an individual reward based on the rank among individual participants:
+				</p>
+				<h:panelGrid columns="2" style="margin: 0 auto;text-align:center;">
+					<h:outputText value="Rank" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;Reward" style="font-weight:bold;"/>
+					<h:outputText value="1" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;25$" style="font-weight:bold;"/>
+					<h:outputText value="2" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;12$" style="font-weight:bold;"/>
+					<h:outputText value="3" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;7$" style="font-weight:bold;"/>
+					<h:outputText value="4" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;4$" style="font-weight:bold;"/>
+					<h:outputText value="5" style="font-weight:bold;"/>
+					<h:outputText value="&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;2$" style="font-weight:bold;"/>
+				</h:panelGrid>
+				</li>
+				</ul>
+			<h:panelGroup rendered="#{bonusBean.bonusEventsEnabled}">
+				<p><b>What are Bonus Events?</b></p>
+				<p>
+					<b>A: </b>
+				Throughout the competition, there are one hour long bonus events 
+				<h:outputText value="which are announced one hour in advance." rendered="#{!bonusBean.showSchedule}"/> 
+				<h:outputText value="which are announced in a schedule (please log in to view the schedule)." rendered="#{bonusBean.showSchedule}"/>
+				During bonus events, points for completed batches are increased:
+				<h:outputText value="#{bonusBean.bonusFactor * 100}"/> 
+				points if the test case is annotated correctly
+				<h:outputText value="(#{bonusBean.bonusFactor * 20}"/> 
+				points are subtracted if the test case is annotated incorrectly).
+				</p>
+			</h:panelGroup>
+			<p><b>Why do you pay only the top performers? What about the rest?</b></p>
+			<p>
+				<b>A: </b>
+				We conduct performance based competitions in the context of our research work. 
+				Like in all games, there is only one or a limited number of players that can win. 
+				Therefore, this game will not reward all participants.
+			</p>
+			
+			<p><b>What are channel fees and how do they affect my payment?</b></p>
+			<p>
+				<b>A: </b>
+				Your channel may claim a certain amount from the money we pay as a bonus payment.
+				To compensate for this, we issue payments that exceed the reward in such a way, that the amount you receive is the one that is advertised.
+				There are extreme cases, where the channel claims more than half of the rewards.
+				In such cases we may not be able to fully compensate for this and remove the channel from further competitions. 
+				If there are any doubts or problems with the payment, please contact us at <a href="mailto:crowdgames@l3s.de">crowdgames@l3s.de</a>.
+			</p>
+			
+			<p><b>Why does the game run outside the CrowdFlower platform?</b></p>
+			<p>
+				<b>A: </b>
+				Because of technical limitations, the game has to run outside the CrowdFlower platform. 
+				However, monetary prizes are transferred as announced via the bonus payment method.
+			</p>
+			
+			<p><b>Why are you doing this?</b></p>
+			<p>
+				<b>A: </b>
+				The games are part of our crowdsourcing research conducted at the 
+				<a href="http://www.l3s.de"> L3S Research Center </a> which is an institute of the 
+				<a href="http://www.uni-hannover.de/en/">University of Hannover</a>, Germany. 
+			</p>
+		</p:dialog>
+		<p:dialog header="#{msg.homepageSignup}" widgetVar="dlg"
+			resizable="true" modal="true"  rendered="#{not learnwebBean.learnweb.afterEnd}">
+
+			<h:form id="registerform">
+
+				<h:panelGrid columns="3">
+					<h:outputLabel for="username" value="#{msg.username}: *" />
+					<p:inputText id="username" value="#{registrationBean.username}"
+						validator="#{registrationBean.validateUsername}" required="true">
+					</p:inputText>
+					<p:message showSummary="true" showDetail="false" styleClass="error"
+						for="username" id="usernameMessage" />
+
+					<h:outputLabel for="password" value="#{msg.password}: *" />
+					<p:password id="password" value="#{registrationBean.password}"
+						autocomplete="false" promptLabel="#{msg.passwordStrength_prompt}"
+						weakLabel="#{msg.passwordStrength_weak}"
+						goodLabel="#{msg.passwordStrength_good}"
+						strongLabel="#{msg.passwordStrength_strong}">
+					</p:password>
+					<p:message id="passwordMessage" showSummary="true"
+						showDetail="false" styleClass="error" for="password" />
+
+					<h:outputLabel for="confirm_password"
+						value="#{msg.confirm_password}: *" />
+					<p:password id="confirm_password"
+						value="#{registrationBean.confirmPassword}"
+						validator="#{registrationBean.validatePassword}"
+						promptLabel="#{msg.passwordStrength_prompt}"
+						weakLabel="#{msg.passwordStrength_weak}"
+						goodLabel="#{msg.passwordStrength_good}"
+						strongLabel="#{msg.passwordStrength_strong}">
+					</p:password>
+					<p:message id="confirmPasswordMessage" showSummary="true"
+						showDetail="false" styleClass="error" for="confirm_password" />
+
+					<h:outputLabel for="email" value="#{msg.email_address}: *" />
+					<p:inputText id="email" value="#{registrationBean.email}" 
+						validator="#{registrationBean.validateEmail}" required="true">
+					</p:inputText>
+					<p:message id="emailMessage" showSummary="true" showDetail="false"
+						styleClass="error" for="email" />
+					
+					<h:outputLabel for="age" value="#{msg.age}:" />
+					<p:inputText id="age" value="#{registrationBean.age}" required="false"/>
+					<p:message id="ageMessage" showSummary="true" showDetail="false"
+						styleClass="error" for="age" />
+					
+					<h:outputText value="#{msg.gender}:" />
+					<h:selectOneMenu id="usergender" value="#{registrationBean.gender}">
+						<f:selectItem id="g0" itemLabel="--" itemValue="0" />
+						<f:selectItem id="g1" itemLabel="#{msg.gender_male}"
+							itemValue="1" />
+						<f:selectItem id="g2" itemLabel="#{msg.gender_female}"
+							itemValue="2" />
+					</h:selectOneMenu>
+					<p:message showSummary="true" showDetail="false"
+						styleClass="error" for="usergender" id="usergenderMessage" />
+								
+					<h:outputLabel for="country" value="#{msg.country}:" />
+					<p:inputText id="country" value="#{registrationBean.country}" required="false"/>
+					<p:message id="countryMessage" showSummary="true" showDetail="false"
+						styleClass="error" for="country" />
+
+					<h:outputText value="" />
+					<h:commandButton action="#{registrationBean.register}"
+						value="#{msg.registerLabel}" ajax="false" styleClass="greenbutton"
+						update=":growl">
+					</h:commandButton>
+					<h:outputText value="" />
+				</h:panelGrid>
+				<h:outputText value="* #{msg.mandatory_field}" />
+			</h:form>
+
+		</p:dialog>
+	</h:body>
+</f:view>
+</html>
