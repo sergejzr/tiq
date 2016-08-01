@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div
+		style="width: 90%; position: relative; margin-left: auto; margin-right: auto;"
+		id="right_div">
+		<h:form>
+			<p>
+				<p:commandButton styleClass="blackbutton" style="float:right; margin-bottom:2px; margin-top: -4px;"
+					actionListener="#{rightNavigationBean.goToLeaderboard()}"
+					value="Back" update=":right_pane :growl" ajax="false" />
+			</p>
+		</h:form>
+		<br class="clear" />
+		<h:form id="profile_form" enctype="multipart/form-data">
+			<p:panel rendered="#{learnwebBean.learnweb.planB and not userBean.user.active}"
+				style="margin: 2px;">
+				<h:outputText value="user code: "
+					style="font-family: sans-serif;left:30px; top: 20px; text-align:right;"
+					rendered="#{learnwebBean.learnweb.planB and not userBean.user.active}" />
+				<h:outputText value="#{userBean.user.mtToken}"
+					style="color: font-weight: bold; font-family: sans-serif; left:30px; top: 20px; text-align:right;"
+					rendered="#{learnwebBean.learnweb.planB and not userBean.user.active}" />
+					<br />
+			</p:panel>
+			
+			<h:panelGrid columns="3" style="float:left; margin-right:20px;">
+				<h:outputText value="#{msg.email_address}:" />
+				<p:inputText id="useremail" value="#{profileBean.email}">
+					<f:ajax render="useremailMessage" />
+				</p:inputText>
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="useremail" id="useremailMessage" />
+
+				<h:outputText value="#{msg.profile_notifications}:" />
+				<p:selectBooleanCheckbox id="mailnotifications"
+					value="#{profileBean.mailNotifications}" />
+				<p></p>
+
+				<h:outputText value="#{msg.gender}:" />
+				<h:selectOneMenu id="usergender" value="#{profileBean.gender}">
+					<f:selectItem id="g0" itemLabel="--" itemValue="0" />
+					<f:selectItem id="g1" itemLabel="#{msg.gender_male}" itemValue="1" />
+					<f:selectItem id="g2" itemLabel="#{msg.gender_female}"
+						itemValue="2" />
+				</h:selectOneMenu>
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="usergender" id="usergenderMessage" />
+
+				<h:outputText value="#{msg.age}:" />
+				<p:inputText id="userage" value="#{profileBean.age}" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="userage" id="userageMessage" />
+
+				<h:outputText value="#{msg.address}:" />
+				<p:inputTextarea id="useraddress" value="#{profileBean.address}"
+					style="width:200px;" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="useraddress" id="useraddressMessage" />
+
+				<h:outputText value="#{msg.country}:" />
+				<p:inputText id="usercountry" value="#{profileBean.country}" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="usercountry" id="usercountryMessage" />
+
+				<h:outputText value="#{msg.profession}:" />
+				<p:inputText id="userprofession" value="#{profileBean.profession}" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="userprofession" id="userprofessionMessage" />
+
+
+				<h:outputText value="#{msg.interest}:" />
+				<p:inputText id="userinterest" value="#{profileBean.interest}" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="userinterest" id="userinterestMessage" />
+
+
+				<h:outputText rendered="false" value="#{msg.dateofbirth}:" />
+				<p:calendar rendered="false" disabled="true" id="userdateofbirth"
+					value="#{profileBean.dateofbirth}" navigator="true"
+					maxdate="#{profileBean.maxBirthday}" locale="de" />
+				<p:message rendered="false" showSummary="true" showDetail="false"
+					styleClass="error" for="userdateofbirth"
+					id="userdateofbirthMessage" />
+
+				<h:outputText value="#{msg.additionalinformation}:" />
+				<p:inputTextarea id="useradditionalinformation"
+					value="#{profileBean.additionalInformation}" style="width:200px;" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="useradditionalinformation"
+					id="useradditionalinformationMessage" />
+
+				<h:outputText value="#{msg.facebook}:" />
+				<p:inputText id="userfacebook" value="#{profileBean.facebook}" />
+				<p:message showSummary="true" showDetail="false" styleClass="error"
+					for="userfacebook" id="userfacebookMessage" />
+
+
+				<h:outputText value="" />
+				<p:commandButton styleClass="blackbutton"
+					actionListener="#{profileBean.saveProfile}" value="#{msg.save}"
+					ajax="true" process="@form" update=":growl @form" />
+				<h:outputText value="" />
+			</h:panelGrid>
+			<br class="clear" />
+		</h:form>
+
+		<br />
+
+		<p:panel header="#{msg.change_password}">
+
+			<h:form id="profile_passwordform">
+
+				<h:panelGrid columns="3">
+					<h:outputLabel for="current_password"
+						value="#{msg.current_password}:" />
+					<p:password id="current_password"
+						value="#{profileBean.currentPassword}"
+						validator="#{profileBean.validateCurrentPassword}"
+						feedback="false" autocomplete="off">
+						<f:ajax render="currentPasswordMessage" />
+					</p:password>
+					<p:message id="currentPasswordMessage" showSummary="true"
+						showDetail="false" styleClass="error" for="current_password" />
+
+					<h:outputText value="&#xA0;"
+						style="font-size:5px; line-height:5px;" />
+					<h:outputText value="&#xA0;"
+						style="font-size:5px; line-height:5px;" />
+					<h:outputText value="&#xA0;"
+						style="font-size:5px; line-height:5px;" />
+
+					<h:outputLabel for="password" value="#{msg.new_password}:" />
+					<p:password id="password" value="#{profileBean.password}"
+						promptLabel="#{msg.passwordStrength_prompt}"
+						weakLabel="#{msg.passwordStrength_weak}"
+						goodLabel="#{msg.passwordStrength_good}"
+						strongLabel="#{msg.passwordStrength_strong}">
+					</p:password>
+					<p:message id="passwordMessage" showSummary="true"
+						showDetail="false" styleClass="error" for="password" />
+
+					<h:outputLabel for="confirm_password"
+						value="#{msg.confirm_password}:" />
+					<p:password id="confirm_password"
+						value="#{profileBean.confirmPassword}"
+						validator="#{profileBean.validatePassword}"
+						promptLabel="#{msg.passwordStrength_prompt}"
+						weakLabel="#{msg.passwordStrength_weak}"
+						goodLabel="#{msg.passwordStrength_good}"
+						strongLabel="#{msg.passwordStrength_strong}">
+					</p:password>
+					<p:message id="confirmPasswordMessage" showSummary="true"
+						showDetail="false" styleClass="error" for="confirm_password" />
+
+					<h:outputText value="" />
+					<p:commandButton styleClass="blackbutton"
+						actionListener="#{profileBean.onChangePassword}"
+						value="#{msg.save}" ajax="true" process="@form"
+						update=":growl @form" />
+					<h:outputText value="" />
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	</div>
+</ui:composition>
