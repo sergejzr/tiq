@@ -27,8 +27,10 @@
 		</h:form>	
 		<p:growl id="growl" />
 		<div style="float:right; margin-left: auto; margin-right:50px; margin-top:10px;">
+		<h:form>
 		<h:commandButton styleClass="blackbutton"
 						value="FAQ" onclick="faq.show();"/>
+						</h:form>
 		</div>
 		<div class="info">
 		<div style="display:block; position: relative;top: 20px; margin-left: auto; margin-right: auto;">
@@ -58,7 +60,7 @@
 				</span>
 
 			</div>
-	
+
 				<div style="width: 260px;height: inherit;top: 5%;margin-left: auto; margin-right:1%; padding-left: 10px;padding-right: 20px;display: block;border-left: 1px solid #489a83; border-bottom: 1px solid #489a83; float:right;">
 					<h:form rendered="#{!userBean.loggedIn}" id="loginform">
 						<p:focus for="username" />
@@ -94,7 +96,7 @@
 									ajax="false" 
 									update=":growl "/>
 								<h:commandButton id="register" rendered="#{not learnwebBean.learnweb.afterEnd}"
-									onclick="dlg.show(); return false;" styleClass="greenbutton"
+									onclick="PF('dlg').show(); return false;" styleClass="greenbutton"
 									value="I'm a new user!" style=" margin-left:0px;"></h:commandButton>
 							</h:panelGrid>
 							<h:outputText value="" />

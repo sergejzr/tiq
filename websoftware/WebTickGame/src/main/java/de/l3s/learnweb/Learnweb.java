@@ -3,6 +3,7 @@ package de.l3s.learnweb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -132,9 +133,9 @@ public class Learnweb extends Observable {
 		}
 
 		this.properties = new Properties();
-
+		String propertiesFileName = "mechanical";
 		try {
-			String propertiesFileName = "mechanical";
+		
 
 			if ((new File("/home/markus")).exists()) // don't change this. Add
 														// an elseif statement,
@@ -143,6 +144,10 @@ public class Learnweb extends Observable {
 														// file
 				propertiesFileName = "mt_local_markus";
 
+			InputStream loader = getClass().getClassLoader().getResourceAsStream(
+					"de/l3s/learnweb/config/" + propertiesFileName
+					+ ".properties");
+			
 			properties.load(getClass().getClassLoader().getResourceAsStream(
 					"de/l3s/learnweb/config/" + propertiesFileName
 							+ ".properties"));
@@ -203,7 +208,11 @@ public class Learnweb extends Observable {
 			cal = GregorianCalendar.getInstance(TimeZone
 					.getTimeZone("Europe/Berlin"));
 			cal.clear();
+			System.out.println(cal.getTime());
 			cal.set(eYear, eMonth - 1, eDay, eHour, eMinute);
+			
+			System.out.println(cal.getTime());
+			
 			this.end = cal;
 			logger.info("end date is: " + cal.toString());
 
@@ -224,6 +233,14 @@ public class Learnweb extends Observable {
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 		}
+	}
+	public static void main(String[] args) {
+		Calendar cal = GregorianCalendar.getInstance(TimeZone
+				.getTimeZone("Europe/Berlin"));
+		
+		cal.set(2016, 7,15,2,10);
+		
+		System.out.println(cal.getTime());
 	}
 
 	/*

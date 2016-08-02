@@ -53,6 +53,7 @@ public class ScoreManager extends SQLManager {
 			stmt.setInt(4, entry.getRank());
 			stmt.setLong(5, entry.getLastScoredTime());
 			stmt.setInt(6, entry.getNumTickets());
+			System.out.println("insert(ScoreEntry) executes: " + stmt.toString());
 			logger.debug("insert(ScoreEntry) executes: " + stmt.toString());
 			stmt.executeUpdate();
 		} finally {
@@ -68,6 +69,9 @@ public class ScoreManager extends SQLManager {
 	 * @throws SQLException
 	 */
 	public void updateScores() throws SQLException {
+		
+		//SZ:// need to add the procedure
+		if(true) return;
 		PreparedStatement stmt = null;
 		try {
 			// CallableStatment
