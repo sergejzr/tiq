@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.mysql.jdbc.Statement;
+//import com.mysql.jdbc.Statement;
 
 import de.l3s.learnweb.Learnweb;
 import de.l3s.mt.model.Group;
@@ -93,12 +93,14 @@ public class GroupManager extends SQLManager {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
+			/*
 			stmt = learnweb.getConnection()
 					.prepareStatement(
 							"REPLACE INTO `" + GROUPTABLE
 									+ "` (group_id, groupname, num_members) "
 									+ "VALUES (?,?,?)",
 							Statement.RETURN_GENERATED_KEYS);
+							*/
 			if (group.getId() < 0) // the User is not yet stored at the database
 				stmt.setNull(1, java.sql.Types.INTEGER);
 			else

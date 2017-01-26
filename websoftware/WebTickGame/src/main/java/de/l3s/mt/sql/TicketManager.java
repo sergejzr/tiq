@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+//import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import de.l3s.learnweb.Learnweb;
 import de.l3s.mt.model.LotteryTicket;
@@ -58,6 +58,7 @@ public class TicketManager extends SQLManager {
 	}
 
 	public LotteryTicket saveNew(LotteryTicket ticket) throws SQLException {
+		/*
 		if (ticket.getId() > 0)
 			return save(ticket);
 
@@ -72,7 +73,7 @@ public class TicketManager extends SQLManager {
 				logger.error("failed saving ticket (attempt " + tries + ") "
 						+ ticket.toString(), e);
 			}
-		}
+		}*/
 		return ticket;
 	}
 

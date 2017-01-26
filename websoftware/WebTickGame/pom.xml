@@ -100,12 +100,6 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.21</version>
 		</dependency>
-
-		<dependency>
-			<groupId>sz.uk.soton</groupId>
-			<artifactId>database</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 <dependency>
     <groupId>log4j</groupId>
     <artifactId>log4j</artifactId>
@@ -168,6 +162,11 @@
 			<groupId>com.mortennobel</groupId>
 			<artifactId>java-image-scaling</artifactId>
 			<version>0.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.22</version>
 		</dependency>
 	</dependencies>
 	<build>
