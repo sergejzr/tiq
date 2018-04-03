@@ -51,6 +51,7 @@ public class Learnweb extends Observable {
 
 	private Connection dbConnection;
 
+	
 	private Properties properties;
 	private String contextUrl;
 

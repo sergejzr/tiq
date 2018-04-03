@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ComponentSystemEvent;
@@ -41,7 +42,13 @@ public class UserBean implements Serializable {
 	private static final Logger logger = Logger.getLogger(UserBean.class);
 
 	public UserBean() {
-		locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+		UIViewRoot vroot = FacesContext.getCurrentInstance().getViewRoot();
+		if(vroot==null){		
+		locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+		}else
+		{
+		locale = vroot.getLocale();
+		}
 		preferences = new HashMap<String, Object>();
 	}
 
